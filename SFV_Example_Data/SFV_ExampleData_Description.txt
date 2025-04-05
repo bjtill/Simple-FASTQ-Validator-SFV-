@@ -1,0 +1,64 @@
+﻿SFV: Example Data   (Bradley Till, April 5, 2025)
+
+Included in this directory are 8 example FASTQ files, consisting of 4 unique files that are uncompressed and also compressed with bgzip.  One file is correctly formatted, and the program outputs Yes for all checks. The other files contain one error each.  
+
+FILES AND EXPECTED BEHAVIOR:
+
+Below shows the command run for each file and the output. All possible commands/outputs are shown only for the first FASTQ file.
+
+cat SFV_shorttestOK.fastq | ./SFV_Simple_fastq_validator 
+
+Summary:
+- Processed 100 reads (400 lines)
+- Expected line count divisible by 4: Yes
+- All sequence lengths match quality lengths: Yes
+- No duplicate sequence IDs: Yes
+
+cat SFV_shorttestOK.fastq | ./SFV_Simple_fastq_validator 0
+
+Summary:
+- Processed 100 reads (400 lines)
+- Expected line count divisible by 4: Yes
+- All sequence lengths match quality lengths: Yes
+- No duplicate sequence IDs: NA (check skipped)
+
+bgzip -dc SFV_shorttestOK.fastq.gz | ./SFV_Simple_fastq_validator 
+
+Summary:
+- Processed 100 reads (400 lines)
+- Expected line count divisible by 4: Yes
+- All sequence lengths match quality lengths: Yes
+- No duplicate sequence IDs: Yes
+
+bgzip -dc SFV_shorttestOK.fastq.gz | ./SFV_Simple_fastq_validator 0
+
+Summary:
+- Processed 100 reads (400 lines)
+- Expected line count divisible by 4: Yes
+- All sequence lengths match quality lengths: Yes
+- No duplicate sequence IDs: NA (check skipped)
+
+cat SFV_shorttestTruncation_Lines.fastq | ./SFV_Simple_fastq_validator 
+
+Summary:
+- Processed 99 reads (398 lines)
+- Expected line count divisible by 4: No
+- All sequence lengths match quality lengths: Yes
+- No duplicate sequence IDs: Yes
+cat SFV_shorttest_RawSeqQualityWrong.fastq | ./SFV_Simple_fastq_validator 
+Error at read 4: Sequence length (96) != Quality length (109)
+
+Summary:
+- Processed 100 reads (400 lines)
+- Expected line count divisible by 4: Yes
+- All sequence lengths match quality lengths: No
+- No duplicate sequence IDs: Yes
+
+bgzip -dc SFV_shorttest_duplication.fastq.gz | ./SFV_Simple_fastq_validator 
+Duplicate ID found: A00548:420:HMG73DRX2:1:2101:27136:1454 (first seen at read 4, again at read 5)
+
+Summary:
+- Processed 101 reads (404 lines)
+- Expected line count divisible by 4: Yes
+- All sequence lengths match quality lengths: Yes
+- No duplicate sequence IDs: No
